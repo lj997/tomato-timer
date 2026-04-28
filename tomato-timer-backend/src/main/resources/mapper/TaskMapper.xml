@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tomato.mapper.TaskMapper">
+    
+    <resultMap id="TaskResultMap" type="com.tomato.entity.Task">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="estimated_pomodoros" property="estimatedPomodoros"/>
+        <result column="completed_pomodoros" property="completedPomodoros"/>
+        <result column="status" property="status"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, title, estimated_pomodoros, completed_pomodoros, status, created_time, updated_time
+    </sql>
+    
+    <insert id="insert" parameterType="com.tomato.entity.Task" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO task (title, estimated_pomodoros, completed_pomodoros, status, created_time, updated_time)
+        VALUES (#{title}, #{estimatedPomodoros}, #{completedPomodoros}, #{status}, #{createdTime}, #{updatedTime})
+    </insert>
+    
+    <update id="update" parameterType="com.tomato.entity.Task">
+        UPDATE task SET
+            title = #{title},
+            estimated_pomodoros = #{estimatedPomodoros},
+            completed_pomodoros = #{completedPomodoros},
+            status = #{status},
+            updated_time = #{updatedTime}
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM task WHERE id = #{id}
+    </delete>
+    
+    <select id="selectById" resultMap="TaskResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM task WHERE id = #{id}
+    </select>
+    
+    <select id="selectByDate" resultMap="TaskResultMap">
+        SELECT <include refid="Base_Column_List"/> 
+        FROM task 
+        WHERE DATE(created_time) = #{date}
+        ORDER BY created_time DESC
+    </select>
+    
+    <select id="selectAll" resultMap="TaskResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM task ORDER BY created_time DESC
+    </select>
+</mapper>

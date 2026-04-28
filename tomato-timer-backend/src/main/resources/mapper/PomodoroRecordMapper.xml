@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tomato.mapper.PomodoroRecordMapper">
+    
+    <resultMap id="PomodoroRecordResultMap" type="com.tomato.entity.PomodoroRecord">
+        <id column="id" property="id"/>
+        <result column="task_id" property="taskId"/>
+        <result column="task_title" property="taskTitle"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="duration" property="duration"/>
+        <result column="is_completed" property="isCompleted"/>
+        <result column="type" property="type"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, task_id, task_title, start_time, end_time, duration, is_completed, type, created_time
+    </sql>
+    
+    <insert id="insert" parameterType="com.tomato.entity.PomodoroRecord" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pomodoro_record (task_id, task_title, start_time, end_time, duration, is_completed, type, created_time)
+        VALUES (#{taskId}, #{taskTitle}, #{startTime}, #{endTime}, #{duration}, #{isCompleted}, #{type}, #{createdTime})
+    </insert>
+    
+    <update id="update" parameterType="com.tomato.entity.PomodoroRecord">
+        UPDATE pomodoro_record SET
+            task_id = #{taskId},
+            task_title = #{taskTitle},
+            start_time = #{startTime},
+            end_time = #{endTime},
+            duration = #{duration},
+            is_completed = #{isCompleted},
+            type = #{type}
+        WHERE id = #{id}
+    </update>
+    
+    <select id="selectById" resultMap="PomodoroRecordResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM pomodoro_record WHERE id = #{id}
+    </select>
+    
+    <select id="selectByTaskId" resultMap="PomodoroRecordResultMap">
+        SELECT <include refid="Base_Column_List"/> 
+        FROM pomodoro_record 
+        WHERE task_id = #{taskId} 
+        ORDER BY start_time DESC
+    </select>
+    
+    <select id="selectByDate" resultMap="PomodoroRecordResultMap">
+        SELECT <include refid="Base_Column_List"/> 
+        FROM pomodoro_record 
+        WHERE DATE(start_time) = #{date}
+        ORDER BY start_time DESC
+    </select>
+    
+    <select id="selectByDateRange" resultMap="PomodoroRecordResultMap">
+        SELECT <include refid="Base_Column_List"/> 
+        FROM pomodoro_record 
+        WHERE DATE(start_time) >= #{startDate} AND DATE(start_time) <= #{endDate}
+        ORDER BY start_time
+    </select>
+    
+    <select id="countCompletedByDate" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM pomodoro_record 
+        WHERE DATE(start_time) = #{date} AND is_completed = 1 AND type = 'work'
+    </select>
+    
+    <select id="sumDurationByDateRange" resultType="java.lang.Long">
+        SELECT IFNULL(SUM(duration), 0) FROM pomodoro_record 
+        WHERE DATE(start_time) >= #{startDate} AND DATE(start_time) <= #{endDate} 
+            AND is_completed = 1 AND type = 'work'
+    </select>
+</mapper>
