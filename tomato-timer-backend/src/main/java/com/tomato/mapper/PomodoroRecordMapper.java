@@ -1,13 +1,11 @@
 package com.tomato.mapper;
 
 import com.tomato.entity.PomodoroRecord;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Mapper
 public interface PomodoroRecordMapper {
     
     int insert(PomodoroRecord record);

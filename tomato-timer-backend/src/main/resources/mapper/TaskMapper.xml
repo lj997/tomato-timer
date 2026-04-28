@@ -3,13 +3,13 @@
 <mapper namespace="com.tomato.mapper.TaskMapper">
     
     <resultMap id="TaskResultMap" type="com.tomato.entity.Task">
-        <id column="id" property="id"/>
-        <result column="title" property="title"/>
-        <result column="estimated_pomodoros" property="estimatedPomodoros"/>
-        <result column="completed_pomodoros" property="completedPomodoros"/>
-        <result column="status" property="status"/>
-        <result column="created_time" property="createdTime"/>
-        <result column="updated_time" property="updatedTime"/>
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="estimated_pomodoros" property="estimatedPomodoros" />
+        <result column="completed_pomodoros" property="completedPomodoros" />
+        <result column="status" property="status" />
+        <result column="created_time" property="createdTime" />
+        <result column="updated_time" property="updatedTime" />
     </resultMap>
     
     <sql id="Base_Column_List">
@@ -36,17 +36,17 @@
     </delete>
     
     <select id="selectById" resultMap="TaskResultMap">
-        SELECT <include refid="Base_Column_List"/> FROM task WHERE id = #{id}
+        SELECT <include refid="Base_Column_List" /> FROM task WHERE id = #{id}
     </select>
     
     <select id="selectByDate" resultMap="TaskResultMap">
-        SELECT <include refid="Base_Column_List"/> 
+        SELECT <include refid="Base_Column_List" /> 
         FROM task 
         WHERE DATE(created_time) = #{date}
         ORDER BY created_time DESC
     </select>
     
     <select id="selectAll" resultMap="TaskResultMap">
-        SELECT <include refid="Base_Column_List"/> FROM task ORDER BY created_time DESC
+        SELECT <include refid="Base_Column_List" /> FROM task ORDER BY created_time DESC
     </select>
 </mapper>
