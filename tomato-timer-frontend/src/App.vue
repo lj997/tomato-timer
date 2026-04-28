@@ -41,18 +41,18 @@
         />
       </div>
 
-      <div v-if="activeTab === 'tasks'" key="tasks">
+      <div v-else-if="activeTab === 'tasks'" key="tasks">
         <TaskComponent 
           @select-task="onSelectTask"
           :selected-task-id="selectedTask?.id"
         />
       </div>
 
-      <div v-if="activeTab === 'statistics'" key="statistics">
+      <div v-else-if="activeTab === 'statistics'" key="statistics">
         <StatisticsComponent />
       </div>
 
-      <div v-if="activeTab === 'settings'" key="settings">
+      <div v-else-if="activeTab === 'settings'" key="settings">
         <SettingsComponent 
           :work-duration="workDuration"
           :break-duration="breakDuration"

@@ -56,7 +56,7 @@
     <select id="selectByDateRange" resultMap="PomodoroRecordResultMap">
         SELECT <include refid="Base_Column_List" /> 
         FROM pomodoro_record 
-        WHERE DATE(start_time) >= #{startDate} AND DATE(start_time) <= #{endDate}
+        WHERE DATE(start_time) >= #{startDate} AND DATE(start_time) &lt;= #{endDate}
         ORDER BY start_time
     </select>
     
@@ -67,7 +67,7 @@
     
     <select id="sumDurationByDateRange" resultType="java.lang.Long">
         SELECT IFNULL(SUM(duration), 0) FROM pomodoro_record 
-        WHERE DATE(start_time) >= #{startDate} AND DATE(start_time) <= #{endDate} 
+        WHERE DATE(start_time) >= #{startDate} AND DATE(start_time) &lt;= #{endDate} 
             AND is_completed = 1 AND type = 'work'
     </select>
 </mapper>
